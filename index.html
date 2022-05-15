@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+	</head>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		html,body {
+			width: 100%;
+			height: 100vh;
+			color: white;
+		}
+		body {
+			background: url(https://api.xygeng.cn/Bing/) no-repeat center center;
+		}
+		.main {
+			width: 100%;
+			height: 100%;
+			background-color: #FFFFFF10;
+			backdrop-filter:blur(10px);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		.container {
+			width: 60%;
+			border-radius: 10px;
+			padding: 30px;
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translateX(-50%) translateY(-70%);
+		}
+		.container h2 {
+			margin: 10px 0;
+		}
+		.form input {
+			width: 80%;
+			padding: 10px 5px;
+			border-radius: 10px;
+			border: 2px solid #ADD8E6;
+			margin: 20px 0;
+		}
+		input:focus {
+			outline: none;
+		}
+		button {
+			display: inline-block;
+			padding: 10px 50px;
+			background-color: #ADD8E6;
+			border-radius: 10px;
+			color: white;
+			border: 2px solid #ADD8E6;
+		}
+		button:hover {
+			outline: none;
+			background-color: #ADD8a2;
+		}
+		@media screen and (max-width:768px) {
+			.container {
+				width: 100%;
+			}
+		}
+	</style>
+	<body class="">
+		<div class="main blur-box">
+			
+			<div class="container">
+				<h2>在线文本检测</h2>
+				<p>检测是否包含违规文本信息。检测是否包含：色情文字， 广告文字，敏感文字，涉政文字， 灌水文字 低俗辱骂</p>
+				<div class="form">
+					<input  type="text" name="" id="ipt" value="输入文本" />
+					<button id="btn">查询</button>
+				</div>
+				<div id="reuten">
+					<b class="conclusion"><span id="word"></span><span id="msg">
+						
+					</span></b>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			
+			function main() {
+				document.getElementById("btn").onclick = function() {
+					let ipt = document.getElementById("ipt").value;
+					let _return = document.getElementById("reuten");
+					let xhr = new XMLHttpRequest();
+					xhr.open('GET','https://v2.alapi.cn/api/censor/text?token=GSA37mwWjz2YxAo9&text='+ipt);
+					xhr.send();
+					xhr.onload = function() {
+						let data = JSON.parse(xhr.responseText);
+						
+						console.log(data)
+						document.getElementById("msg").innerHTML = data.data.conclusion;
+						if(data.data.data.msg == undefined){
+							document.getElementById("word").innerHTML ='';
+						}
+						document.getElementById("word").innerHTML = data.data.data[0].msg;
+						
+					}
+					
+				}
+			}
+			main()
+			
+			document.onkeydown = function(e){
+				var keyname = window.event ? e.keyCode : e.which;
+				if(keyname == 13){
+				
+				
+					main()
+				}
+			}
+			
+			
+		</script>
+	</body>
+	
+</html>
