@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style>
+		[v-cloak]{
+			display: none;
+		}
+	</style>
+	<body>
+		<div id="root" v-cloak>
+			{{msg}}
+			<h1 v-text='msg'></h1>
+			<div v-html="html"></div>
+			<div v-pre>
+				<ul>
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+				</ul>
+			</div>
+			<h2 v-once>{{msg}}</h2>
+			<input type="text" v-model='msg'>
+			<hr>
+			<button v-on:click='info'>点我提示信息 me clcik message</button>
+			
+			<button v-on:click.once='info'>点我提示信息 me clcik message(只触发一次)</button>
+			
+			<button @keydown.enter='info'>click me</button>
+			<hr>
+			<div v-if='show'>{{msg}}</div>
+			<div v-else>V-if</div>
+		<!--	<div v-else-if='1 == 1'>V-else-if</div> -->
+			<button @click='showdiv'>显示</button>
+			<hr>
+			<h1 v-for='(item,index) in arr' :key='arr.index'>{{arr[index]}}</h1>
+			
+			<label for="#">
+				性：<input type="text" v-model='firstname'> <br>
+				名：<input type="text" v-model='lastname'><br>
+				全名：<span>{{fullname}}</span>
+			</label>
+		</div>
+		<script src="./数据代理/js/v2.6.10/vue.js"></script>
+		<script>
+			//Vue.config.keyCodes.enter = 112;
+			Vue.config.productionTip = false;
+			new Vue({
+				el:'#root',
+				data:{
+					msg:'Hello Vue',
+					html:'<h2>Hello Vue !</h2>',
+					show:true,
+					arr:[0,1,2,3,4],
+					firstname:'张',
+					lastname:'三',
+				},
+				methods:{
+					info(){
+						alert(this.msg)
+					},
+					showdiv(){
+						//判断当前日期戳是否为偶数 偶数就隐藏
+						if(Date.now() % 2 == 0){
+							this.show = false
+						}else{
+							this.show = true
+						}
+					}
+				},
+				computed:{
+					fullname:{
+						get(){
+						  return this.firstname + '-' + this.lastname
+						},
+						set(newvalue){
+							const arr = newvalue.split('-'); //获得字符串以'-'分割
+							this.firstname = arr[0];
+							this.lastname = arr[1]
+						}
+					}
+				},
+				watch:{
+					msg:{
+						immediate:true,
+						deep:true,
+						handler(newval,oldval){
+							console.log(newval,oldval)
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
